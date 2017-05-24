@@ -5,6 +5,10 @@ using System.Windows.Forms;
 using DevExpress.UserSkins;
 using DevExpress.Skins;
 using DevExpress.LookAndFeel;
+using System.Drawing;
+using System.Reflection;
+using DevExpress.XtraSplashScreen;
+using HelpDesk.Classes;
 
 namespace HelpDesk
 {
@@ -19,9 +23,21 @@ namespace HelpDesk
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+
             BonusSkins.Register();
             SkinManager.EnableFormSkins();
-            Application.Run(new Form1());
+
+            Image image = GetImage();
+            // Show splash image
+            SplashScreenManager.ShowImage(image, true, true, SplashImagePainter.Painter);
+            SplashImagePainter.Painter.ViewInfo.Stage = "Загрузка приложения"; Application.Run(new FormMain());
         }
+
+        static Image GetImage()
+        {
+            Assembly asm = typeof(Program).Assembly;
+            return new Bitmap(asm.GetManifestResourceStream("HelpDesk.Supports.support.jpeg"));
+        }
+
     }
 }
